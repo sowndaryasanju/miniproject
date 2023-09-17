@@ -7,8 +7,8 @@ import java.io.OutputStream;
 
 public class Sender {
     public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create();
-        server.bind(null, 8080); // Bind to port 8080 (you can use any available port)
+        HttpServer server = HttpServer.create(new InetSocketAddress(8080),0);
+        //server.bind(null, 8080); // Bind to port 8080 (you can use any available port)
 
         server.createContext("/data", new DataHandler());
         server.setExecutor(null); // Use the default executor
