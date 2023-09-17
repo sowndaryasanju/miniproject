@@ -8,7 +8,8 @@ public class SecureTransfer {
     // Replace with your own secret key (must be 16/24/32 bytes long for AES-128/AES-192/AES-256)
     private static final String secretKey = "1649850479327950";
 
-    public static String encryptMatrix(Matrix matrix) throws Exception {
+    public  String encryptMatrix(Matrix matrix) {
+        try{
         // Convert Jama matrix to byte array
         byte[] matrixBytes = matrixToString(matrix).getBytes("UTF-8");
 
@@ -21,10 +22,14 @@ public class SecureTransfer {
         byte[] encryptedBytes = cipher.doFinal(matrixBytes);
 
         // Encode the encrypted byte array to Base64
-        return Base64.getEncoder().encodeToString(encryptedBytes);
+        return Base64.getEncoder().encodeToString(encryptedBytes);}
+        catch(Exception e){
+            return e.toString();
+        }
     }
 
-    public static Matrix decryptMatrix(String encryptedMatrix) throws Exception {
+    public  Matrix decryptMatrix(String encryptedMatrix) {
+        try{
         // Decode Base64 string back to byte array
         byte[] encryptedBytes = Base64.getDecoder().decode(encryptedMatrix);
 
@@ -36,11 +41,14 @@ public class SecureTransfer {
         // Decrypt the byte array
         byte[] matrixBytes = cipher.doFinal(encryptedBytes);
         // Convert byte array back to Jama matrix
-        return stringToMatrix(new String(matrixBytes, "UTF-8"));
+        return stringToMatrix(new String(matrixBytes, "UTF-8"));}
+        catch(Exception e){
+            return null;
+        }
     }
 
     // Helper function to convert Jama matrix to string
-    private static String matrixToString(Matrix matrix) {
+    private  String matrixToString(Matrix matrix) {
          if (matrix.getRowDimension() != 2 || matrix.getColumnDimension() != 2) {
         return null; // Handle incorrect matrix size as needed
     }
@@ -79,13 +87,13 @@ public class SecureTransfer {
         // Create a sample Jama matrix
         double[][] matrixData = {{1.0, 2.0}, {4.0, 5.0}};
         Matrix originalMatrix = new Matrix(matrixData);
-
+        SecureTransfer st=new SecureTransfer();
         // Encrypt the matrix and send as a string
-        String encryptedString = encryptMatrix(originalMatrix);
+        String encryptedString = st.encryptMatrix(originalMatrix);
         System.out.println("Encrypted String: " + encryptedString);
 
         // Decrypt the string back to the original matrix
-        Matrix decryptedMatrix = decryptMatrix(encryptedString);
+        Matrix decryptedMatrix = st.decryptMatrix(encryptedString);
         System.out.println("Decrypted Matrix:");
         decryptedMatrix.print(10, 2); // Adjust formatting as needed
         System.exit(0);

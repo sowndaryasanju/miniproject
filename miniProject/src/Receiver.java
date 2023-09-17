@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import Jama.Matrix;
+
 public class Receiver {
     public static void main(String[] args) throws IOException {
         String serverUrl = "http://192.168.43.149:8080/data"; // Replace with the actual server's IP address
@@ -25,6 +27,10 @@ public class Receiver {
             in.close();
 
             System.out.println("Server Response: " + response.toString());
+            SecureTransfer st=new SecureTransfer();
+            Matrix decryptedMatrix = st.decryptMatrix( response.toString());
+        System.out.println("Decrypted Matrix:");
+        decryptedMatrix.print(10, 2);
         } else {
             System.err.println("HTTP request failed with response code: " + responseCode);
         }
